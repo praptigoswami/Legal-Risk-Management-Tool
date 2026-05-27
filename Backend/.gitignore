@@ -1,0 +1,13 @@
+# Environment — never commit your API keys
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# macOS
+.DS_Store
