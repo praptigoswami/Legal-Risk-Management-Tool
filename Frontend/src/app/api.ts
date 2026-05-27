@@ -3,7 +3,7 @@
  * All calls go to the FastAPI backend at localhost:8000
  */
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'https://your-render-url.onrender.com';
 
 // ── Shared types ──────────────────────────────────────────────────────────────
 
