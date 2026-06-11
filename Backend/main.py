@@ -10,6 +10,7 @@ import re
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, Optional, List, Literal
+from urllib import response
 
 from groq import Groq
 from dotenv import load_dotenv
@@ -19,9 +20,8 @@ from pydantic import BaseModel, Field
 
 # ── Load environment ──────────────────────────────────────────────────────────
 load_dotenv()
-
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GEMINI_MODEL   = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+AI_MODEL = os.getenv("AI_MODEL", "llama-3.1-8b-instant")
 
 if not GROQ_API_KEY:
     raise RuntimeError(
@@ -29,8 +29,10 @@ if not GROQ_API_KEY:
         "Copy Backend/.env.example to Backend/.env and add your key."
     )
 
-genai.configure(api_key=GROQ_API_KEY)
-model = genai.GenerativeModel(GEMINI_MODEL)
+
+from groq import Groq
+
+client = Groq(api_key=GROQ_API_KEY)
 
 # ── Pydantic Schemas for Structured Output ────────────────────────────────────
 
@@ -184,19 +186,13 @@ def _strip_json_fence(raw: str) -> str:
 def call_gemini(prompt: str, schema: Optional[Any] = None) -> Dict[str, Any]:
     """Call Gemini and parse the JSON response, optionally forcing a Pydantic schema."""
     try:
-        generation_config = genai.GenerationConfig(
+        response = client.chat.completions.create(
+            model=AI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
-            max_output_tokens=8192,
-            response_mime_type="application/json",
         )
-        if schema is not None:
-            generation_config.response_schema = schema
 
-        response = model.model.generate(
-            prompt,
-            generation_config=generation_config,
-        )
-        raw = response.text
+        raw = response.choices[0].message.content
         cleaned = raw.strip()
         if cleaned.startswith("```"):
             cleaned = _strip_json_fence(cleaned)
@@ -205,11 +201,11 @@ def call_gemini(prompt: str, schema: Optional[Any] = None) -> Dict[str, Any]:
         print(f"JSONDecodeError: {e}\nRaw response:\n{raw}")
         raise HTTPException(
             status_code=502,
-            detail=f"Gemini returned invalid JSON: {e}. Please try again."
+            detail=f"Groq returned invalid JSON: {e}. Please try again."
         )
     except Exception as e:
-        print(f"Gemini API Exception: {e}")
-        raise HTTPException(status_code=502, detail=f"Gemini API error: {e}")
+        print(f"Groq API Exception: {e}")
+        raise HTTPException(status_code=502, detail=f"Groq API error: {e}")
 
 
 # ── Prompts ───────────────────────────────────────────────────────────────────
