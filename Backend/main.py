@@ -255,7 +255,7 @@ Important rules:
 
 @app.get("/api/health")
 async def health():
-    return {"status": "ok", "model": GEMINI_MODEL}
+    return {"status": "ok"}
 
 
 @app.post("/api/analyze")
