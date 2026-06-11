@@ -1,9 +1,9 @@
 /**
  * ContractCompass — typed API client
- * All calls go to the FastAPI backend at localhost:8000
+ * All calls go to the FastAPI backend at https://vercel.com/prapttii/legal-risk-management-tool-eifu/9QeWNPMtU8yQbY2nz7rY1PrFxow70
  */
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://https://vercel.com/prapttii/legal-risk-management-tool-eifu/9QeWNPMtU8yQbY2nz7rY1PrFxow70';
 
 // ── Shared types ──────────────────────────────────────────────────────────────
 

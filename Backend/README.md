@@ -37,9 +37,9 @@ uvicorn main:app --reload --port 8000
 python -m uvicorn Backend.main:app --reload --port 8000
 ```
 
-The API will be available at: `http://localhost:8000`
+The API will be available at: `http://https://vercel.com/prapttii/legal-risk-management-tool-eifu/9QeWNPMtU8yQbY2nz7rY1PrFxow70`
 
-Interactive API docs: `http://localhost:8000/docs`
+Interactive API docs: `http://https://vercel.com/prapttii/legal-risk-management-tool-eifu/9QeWNPMtU8yQbY2nz7rY1PrFxow70/docs`
 
 ---
 
